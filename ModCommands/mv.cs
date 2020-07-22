@@ -60,6 +60,17 @@ namespace Multiverse.ModCommands
                             }
                         }
                         break;
+                    case "gui":
+                        switch (args[1])
+                        {
+                            case "on":
+                                Multiverse.instance.ShowMyUI();
+                                break;
+                            case "off":
+                                Multiverse.instance.HideMyUI();
+                                break;
+                        }
+                        break;
                 }
             }
             else

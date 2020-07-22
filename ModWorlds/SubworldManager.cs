@@ -3,6 +3,7 @@ using SubworldLibrary;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.IO;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -72,7 +73,7 @@ namespace Multiverse.ModWorlds
 			return string.Empty;
 		}
 		
-		public static string CreateNormalWorld(string name)
+		public static string CreateFlatWorld(string name)
 		{
 			subworldLibrary = ModLoader.GetMod("SubworldLibrary");
 			if (subworldLibrary != null)
@@ -83,7 +84,7 @@ namespace Multiverse.ModWorlds
 					/*string name*/ name,
 					/*int width*/ 600,
 					/*int height*/ 400,
-					/*List<GenPass> tasks*/ NormalGenPassList(),
+					/*List<GenPass> tasks*/ FlatGenPassList(),
 					/*the following ones are optional, I've included three here (technically two but since order matters, had to pass null for the unload argument)
 					/*Action load*/ (Action)LoadWorld,
 					/*Action unload*/ null,
@@ -121,7 +122,7 @@ namespace Multiverse.ModWorlds
 				{
 					progress.Message = "Loading"; //Sets the text above the worldgen progress bar
 					Main.worldSurface = Main.maxTilesY - 42; //Hides the underground layer just out of bounds
-					Main.rockLayer = Main.maxTilesY; //Hides the cavern layer way out of bounds
+					Main.rockLayer = Main.maxTilesY - 64; //Hides the cavern layer way out of bounds
 					//Create three tiles for the player to stand on when he spawns
 					for (int i = -1; i < 2; i++)
 					{
@@ -132,13 +133,23 @@ namespace Multiverse.ModWorlds
 
 			return list;
 		}
-		public static List<GenPass> NormalGenPassList()
+		public static List<GenPass> FlatGenPassList()
 		{
 			List<GenPass> list = new List<GenPass>
 			{
 				new SubworldGenPass(progress =>
 				{
-					WorldGen.CreateNewWorld(progress);
+					progress.Message = "Placing Dirt"; //Sets the text above the worldgen progress bar
+					progress.Start(1);
+					progress.Set(0);
+					for (int i = -Main.maxTilesX; i < Main.maxTilesX; i++)
+					{
+						for (int ii = Main.maxTilesY; ii > Main.spawnTileY; ii--)
+						{
+							WorldGen.PlaceTile(i,  ii, TileID.Dirt, true, true);
+						}
+						progress.Set(progress.Value + 1);
+					}
 				})
 			};
 

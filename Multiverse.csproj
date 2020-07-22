@@ -18,7 +18,4 @@
       <HintPath>Deps\SubworldLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ModItems\" />
-  </ItemGroup>
 </Project>

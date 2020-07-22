@@ -8,7 +8,7 @@ namespace Multiverse.ModWorlds
 {
     public enum WorldType
     {
-        NormalWorld,
+        FlatWorld,
         VoidWorld
     }
 }
