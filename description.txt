@@ -1,1 +1,1 @@
-Multiverse is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+Multiverse allows Server Owners and Solo Players to add "Subworlds" to their World, Similar to the Multiverse Plugin for Minecraft.

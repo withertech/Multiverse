@@ -56,7 +56,34 @@ namespace Multiverse.ModWorlds
 					/*string name*/ name,
 					/*int width*/ 600,
 					/*int height*/ 400,
-					/*List<GenPass> tasks*/ MySubworldGenPassList(),
+					/*List<GenPass> tasks*/ VoidGenPassList(),
+					/*the following ones are optional, I've included three here (technically two but since order matters, had to pass null for the unload argument)
+					/*Action load*/ (Action)LoadWorld,
+					/*Action unload*/ null,
+					/*ModWorld modWorld*/ null,
+					/*bool saveSubworld*/ true
+					);
+
+				if (result != null && result is string id)
+				{
+					return id;
+				}
+			}
+			return string.Empty;
+		}
+		
+		public static string CreateNormalWorld(string name)
+		{
+			subworldLibrary = ModLoader.GetMod("SubworldLibrary");
+			if (subworldLibrary != null)
+			{
+				object result = subworldLibrary.Call(
+					"Register",
+					/*Mod mod*/ ModContent.GetInstance<Multiverse>(),
+					/*string name*/ name,
+					/*int width*/ 600,
+					/*int height*/ 400,
+					/*List<GenPass> tasks*/ NormalGenPassList(),
 					/*the following ones are optional, I've included three here (technically two but since order matters, had to pass null for the unload argument)
 					/*Action load*/ (Action)LoadWorld,
 					/*Action unload*/ null,
@@ -86,7 +113,7 @@ namespace Multiverse.ModWorlds
 		}
 
 		//Called in subworldLibrary.Call()
-		public static List<GenPass> MySubworldGenPassList()
+		public static List<GenPass> VoidGenPassList()
 		{
 			List<GenPass> list = new List<GenPass>
 			{
@@ -100,6 +127,18 @@ namespace Multiverse.ModWorlds
 					{
 						WorldGen.PlaceTile(Main.spawnTileX - i,  Main.spawnTileY + 2, TileID.Dirt, true, true);
 					}
+				})
+			};
+
+			return list;
+		}
+		public static List<GenPass> NormalGenPassList()
+		{
+			List<GenPass> list = new List<GenPass>
+			{
+				new SubworldGenPass(progress =>
+				{
+					WorldGen.CreateNewWorld(progress);
 				})
 			};
 

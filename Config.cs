@@ -14,6 +14,9 @@ namespace Multiverse
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;
         [Label("Subworlds")]
-        public List<string> WorldsRegistry = new List<string>() { "VoidWorld" };
+        public Dictionary<string, WorldType> WorldsRegistry = new Dictionary<string, WorldType>()
+        {
+            {"VoidWorld", WorldType.VoidWorld }
+        };
     }
 }

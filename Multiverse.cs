@@ -10,14 +10,26 @@ namespace Multiverse
 		public override void PostSetupContent()
 		{
 			base.PostSetupContent();
-			foreach(string name in GetInstance<Config>().WorldsRegistry)
+			foreach(string name in GetInstance<Config>().WorldsRegistry.Keys)
 			{
-				string id = SubworldManager.CreateVoidWorld(name);
-				if (!SubworldManager.WorldsEnter.ContainsKey(name))
+				switch (GetInstance<Config>().WorldsRegistry[name])
 				{
-					SubworldManager.WorldsEnter.Add(name, id);
-					Logger.Debug(name);
-					Logger.Debug(id);
+					case WorldType.VoidWorld:
+						string voidId = SubworldManager.CreateVoidWorld(name);
+						if (!SubworldManager.WorldsEnter.ContainsKey(name))
+						{
+							SubworldManager.WorldsEnter.Add(name, voidId);
+						}
+						break;
+					case WorldType.NormalWorld:
+						string normalId = SubworldManager.CreateNormalWorld(name);
+						if (!SubworldManager.WorldsEnter.ContainsKey(name))
+						{
+							SubworldManager.WorldsEnter.Add(name, normalId);
+						}
+						break;
+					default:
+						break;
 				}
 			}
 		}
