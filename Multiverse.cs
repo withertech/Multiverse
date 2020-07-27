@@ -85,6 +85,13 @@ namespace Multiverse
 							SubworldManager.WorldsEnter.Add(name, id);
 						}
 						break;
+					case WorldType.NormalWorld:
+						id = SubworldManager.CreateNormalWorld(name);
+						if (!SubworldManager.WorldsEnter.ContainsKey(name))
+						{
+							SubworldManager.WorldsEnter.Add(name, id);
+						}
+						break;
 					default:
 						break;
 				}

@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace Multiverse.ModUI
@@ -16,6 +18,7 @@ namespace Multiverse.ModUI
 		private object _text;
 		private UIElement.MouseEvent _clickAction;
 		private UIPanel _uiPanel;
+		private UIImageButton _uiButton;
 		private UIText _uiText;
 		public string World;
 
@@ -43,7 +46,14 @@ namespace Multiverse.ModUI
 			_uiText.VAlign = _uiText.HAlign = 0.5f; // 6
 			_uiPanel.Append(_uiText);
 
-			_uiPanel.OnClick += _clickAction; // 7
+			Texture2D buttonPlayTexture = ModContent.GetTexture("Terraria/UI/ButtonPlay");
+			_uiButton = new UIImageButton(buttonPlayTexture); // 5
+			_uiButton.Width.Set(22, 0); // 5
+			_uiButton.Height.Set(22, 0); // 5
+			_uiButton.HAlign = _uiButton.VAlign = 1.0f;
+			_uiPanel.Append(_uiButton);
+
+			_uiButton.OnClick += _clickAction; // 7
 		}
 
 		public override void Update(GameTime gameTime)

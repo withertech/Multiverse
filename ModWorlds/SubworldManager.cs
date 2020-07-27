@@ -100,6 +100,33 @@ namespace Multiverse.ModWorlds
 			return string.Empty;
 		}
 
+		public static string CreateNormalWorld(string name)
+		{
+			subworldLibrary = ModLoader.GetMod("SubworldLibrary");
+			if (subworldLibrary != null)
+			{
+				object result = subworldLibrary.Call(
+					"Register",
+					/*Mod mod*/ ModContent.GetInstance<Multiverse>(),
+					/*string name*/ name,
+					/*int width*/ 6400,
+					/*int height*/ 1800,
+					/*List<GenPass> tasks*/ NormalGenPassList(),
+					/*the following ones are optional, I've included three here (technically two but since order matters, had to pass null for the unload argument)
+					/*Action load*/ (Action)LoadWorld,
+					/*Action unload*/ null,
+					/*ModWorld modWorld*/ null,
+					/*bool saveSubworld*/ true
+					);
+
+				if (result != null && result is string id)
+				{
+					return id;
+				}
+			}
+			return string.Empty;
+		}
+
 		//Call this in ModCallExampleMod.Unload()
 		public static void Unload()
 		{
@@ -150,6 +177,20 @@ namespace Multiverse.ModWorlds
 						}
 						progress.Set(progress.Value + 1);
 					}
+				})
+			};
+
+			return list;
+		}
+
+		public static List<GenPass> NormalGenPassList()
+		{
+			List<GenPass> list = new List<GenPass>
+			{
+				new SubworldGenPass(progress =>
+				{
+					WorldGen.generateWorld(WorldGen._genRandSeed, progress);
+					WorldFile.saveWorld();
 				})
 			};
 
