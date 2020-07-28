@@ -1,6 +1,6 @@
 displayName = Multiverse
 author = WitherTech
-version = 0.4
+version = 0.5
 modReferences = SubworldLibrary
 homepage = https://github.com/withertech/Multiverse
 includeSource = true

@@ -46,8 +46,29 @@ namespace Multiverse.ModWorlds
 		#endregion
 
 		//Call this in ModCallExampleMod.PostSetupContent()
-		public static string CreateVoidWorld(string name)
+		public static string CreateVoidWorld(string name, WorldSize size, bool save)
 		{
+			int x;
+			int y;
+			switch (size)
+			{
+				case WorldSize.Small:
+					x = 4200;
+					y = 1200;
+					break;
+				case WorldSize.Medium:
+					x = 6400;
+					y = 1800;
+					break;
+				case WorldSize.Large:
+					x = 8400;
+					y = 2400;
+					break;
+				default:
+					x = 0;
+					y = 0;
+					break;
+			}
 			subworldLibrary = ModLoader.GetMod("SubworldLibrary");
 			if (subworldLibrary != null)
 			{
@@ -55,14 +76,14 @@ namespace Multiverse.ModWorlds
 					"Register",
 					/*Mod mod*/ ModContent.GetInstance<Multiverse>(),
 					/*string name*/ name,
-					/*int width*/ 600,
-					/*int height*/ 400,
+					/*int width*/ x,
+					/*int height*/ y,
 					/*List<GenPass> tasks*/ VoidGenPassList(),
 					/*the following ones are optional, I've included three here (technically two but since order matters, had to pass null for the unload argument)
 					/*Action load*/ (Action)LoadWorld,
 					/*Action unload*/ null,
 					/*ModWorld modWorld*/ null,
-					/*bool saveSubworld*/ true
+					/*bool saveSubworld*/ save
 					);
 
 				if (result != null && result is string id)
@@ -73,8 +94,29 @@ namespace Multiverse.ModWorlds
 			return string.Empty;
 		}
 		
-		public static string CreateFlatWorld(string name)
+		public static string CreateFlatWorld(string name, WorldSize size, bool save)
 		{
+			int x;
+			int y;
+			switch (size)
+			{
+				case WorldSize.Small:
+					x = 4200;
+					y = 1200;
+					break;
+				case WorldSize.Medium:
+					x = 6400;
+					y = 1800;
+					break;
+				case WorldSize.Large:
+					x = 8400;
+					y = 2400;
+					break;
+				default:
+					x = 0;
+					y = 0;
+					break;
+			}
 			subworldLibrary = ModLoader.GetMod("SubworldLibrary");
 			if (subworldLibrary != null)
 			{
@@ -82,14 +124,14 @@ namespace Multiverse.ModWorlds
 					"Register",
 					/*Mod mod*/ ModContent.GetInstance<Multiverse>(),
 					/*string name*/ name,
-					/*int width*/ 600,
-					/*int height*/ 400,
+					/*int width*/ x,
+					/*int height*/ y,
 					/*List<GenPass> tasks*/ FlatGenPassList(),
 					/*the following ones are optional, I've included three here (technically two but since order matters, had to pass null for the unload argument)
 					/*Action load*/ (Action)LoadWorld,
 					/*Action unload*/ null,
 					/*ModWorld modWorld*/ null,
-					/*bool saveSubworld*/ true
+					/*bool saveSubworld*/ save
 					);
 
 				if (result != null && result is string id)
@@ -100,8 +142,29 @@ namespace Multiverse.ModWorlds
 			return string.Empty;
 		}
 
-		public static string CreateNormalWorld(string name)
+		public static string CreateNormalWorld(string name, WorldSize size, bool save)
 		{
+			int x;
+			int y;
+			switch (size)
+			{
+				case WorldSize.Small:
+					x = 4200;
+					y = 1200;
+					break;
+				case WorldSize.Medium:
+					x = 6400;
+					y = 1800;
+					break;
+				case WorldSize.Large:
+					x = 8400;
+					y = 2400;
+					break;
+				default:
+					x = 0;
+					y = 0;
+					break;
+			}
 			subworldLibrary = ModLoader.GetMod("SubworldLibrary");
 			if (subworldLibrary != null)
 			{
@@ -109,14 +172,14 @@ namespace Multiverse.ModWorlds
 					"Register",
 					/*Mod mod*/ ModContent.GetInstance<Multiverse>(),
 					/*string name*/ name,
-					/*int width*/ 6400,
-					/*int height*/ 1800,
+					/*int width*/ x,
+					/*int height*/ y,
 					/*List<GenPass> tasks*/ NormalGenPassList(),
 					/*the following ones are optional, I've included three here (technically two but since order matters, had to pass null for the unload argument)
 					/*Action load*/ (Action)LoadWorld,
 					/*Action unload*/ null,
 					/*ModWorld modWorld*/ null,
-					/*bool saveSubworld*/ true
+					/*bool saveSubworld*/ save
 					);
 
 				if (result != null && result is string id)
@@ -167,15 +230,14 @@ namespace Multiverse.ModWorlds
 				new SubworldGenPass(progress =>
 				{
 					progress.Message = "Placing Dirt"; //Sets the text above the worldgen progress bar
-					progress.Start(1);
-					progress.Set(0);
+					Main.worldSurface = Main.maxTilesY - 42; //Hides the underground layer just out of bounds
+					Main.rockLayer = Main.maxTilesY - 64; //Hides the cavern layer way out of bounds
 					for (int i = -Main.maxTilesX; i < Main.maxTilesX; i++)
 					{
 						for (int ii = Main.maxTilesY; ii > Main.spawnTileY; ii--)
 						{
 							WorldGen.PlaceTile(i,  ii, TileID.Dirt, true, true);
 						}
-						progress.Set(progress.Value + 1);
 					}
 				})
 			};

@@ -69,24 +69,24 @@ namespace Multiverse
 			base.PostSetupContent();
 			foreach(string name in GetInstance<Config>().WorldsRegistry.Keys)
 			{
-				switch (GetInstance<Config>().WorldsRegistry[name])
+				switch (GetInstance<Config>().WorldsRegistry[name].type)
 				{
 					case WorldType.VoidWorld:
-						id = SubworldManager.CreateVoidWorld(name);
+						id = SubworldManager.CreateVoidWorld(name, GetInstance<Config>().WorldsRegistry[name].size, GetInstance<Config>().WorldsRegistry[name].save);
 						if (!SubworldManager.WorldsEnter.ContainsKey(name))
 						{
 							SubworldManager.WorldsEnter.Add(name, id);
 						}
 						break;
 					case WorldType.FlatWorld:
-						id = SubworldManager.CreateFlatWorld(name);
+						id = SubworldManager.CreateFlatWorld(name, GetInstance<Config>().WorldsRegistry[name].size, GetInstance<Config>().WorldsRegistry[name].save);
 						if (!SubworldManager.WorldsEnter.ContainsKey(name))
 						{
 							SubworldManager.WorldsEnter.Add(name, id);
 						}
 						break;
 					case WorldType.NormalWorld:
-						id = SubworldManager.CreateNormalWorld(name);
+						id = SubworldManager.CreateNormalWorld(name, GetInstance<Config>().WorldsRegistry[name].size, GetInstance<Config>().WorldsRegistry[name].save);
 						if (!SubworldManager.WorldsEnter.ContainsKey(name))
 						{
 							SubworldManager.WorldsEnter.Add(name, id);
