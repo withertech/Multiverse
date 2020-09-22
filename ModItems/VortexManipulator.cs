@@ -9,9 +9,9 @@ using Terraria.ModLoader;
 
 namespace Multiverse.ModItems
 {
-    class DimensionalPhaseShiftingMirror : ModItem
+    class VortexManipulator : ModItem
     {
-		public override string Texture => "Terraria/Item_" + ItemID.MagicMirror;
+		public override string Texture => "Terraria/Item_" + ItemID.PlatinumWatch;
 
 		public override void SetStaticDefaults()
 		{
@@ -32,19 +32,20 @@ namespace Multiverse.ModItems
 
 		public override bool UseItem(Player player)
 		{
-			//Enter should be called on exactly one side, which here is either the singleplayer player, or the server
-			if (Main.netMode != NetmodeID.MultiplayerClient)
+			if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
 			{
-				
 				Multiverse.instance.ShowMyUI();
 			}
+
 			return true;
 		}
 
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.DirtBlock, 1);
+			recipe.AddIngredient(ItemID.PlatinumWatch, 1);
+			recipe.AddIngredient(ItemID.MagicMirror, 1);
+			recipe.AddTile(TileID.Anvils);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

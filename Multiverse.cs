@@ -7,6 +7,7 @@ using Multiverse.ModUI;
 using Terraria;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Terraria.IO;
 
 namespace Multiverse
 {
@@ -64,6 +65,45 @@ namespace Multiverse
 			base.Unload();
 			worldSelectUI = null;
 		}
+		public override void MidUpdateTimeWorld()
+		{
+			if (Subworld.AnyActive<Multiverse>() && GetInstance<Config>().WorldsRegistry[Util.KeyByValue(SubworldManager.WorldsEnter, SLWorld.currentSubworld.Current)].type == WorldType.NormalWorld)//lotta stuff copied from vanilla
+			{
+				Main.UpdateSundial();
+				Main.time += Main.dayRate;
+				Terraria.GameContent.Events.BirthdayParty.UpdateTime();
+				Terraria.GameContent.Events.DD2Event.UpdateTime();
+
+				if (Main.time > 54000 && Main.dayTime)//replace main.daytime with speed adjust (add/mult)
+				{
+					Main.time = 0;
+					Main.dayTime = !Main.dayTime;
+				}
+				else if (Main.time > 32400 && !Main.dayTime)
+				{
+					if (Main.fastForwardTime)
+					{
+						Main.fastForwardTime = false;
+						Main.UpdateSundial();
+					}
+					Main.checkXMas();
+					Main.checkHalloween();
+					Main.AnglerQuestSwap();
+					Terraria.GameContent.Events.BirthdayParty.CheckMorning();
+					Main.time = 0;
+					Main.dayTime = !Main.dayTime;
+					if (Main.sundialCooldown > 0)
+					{
+						Main.sundialCooldown--;
+					}
+					Main.moonPhase++;
+					if (Main.moonPhase >= 8)
+					{
+						Main.moonPhase = 0;
+					}
+				}
+			}
+		}
 		public override void PostSetupContent()
 		{
 			base.PostSetupContent();
@@ -91,6 +131,7 @@ namespace Multiverse
 						{
 							SubworldManager.WorldsEnter.Add(name, id);
 						}
+						
 						break;
 					default:
 						break;

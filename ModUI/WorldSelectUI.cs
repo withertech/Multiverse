@@ -1,4 +1,4 @@
-﻿using IL.Terraria;
+﻿using Terraria;
 using Multiverse.ModWorlds;
 using SubworldLibrary;
 using System;
@@ -10,6 +10,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria.ID;
 
 namespace Multiverse.ModUI
 {
@@ -35,7 +36,10 @@ namespace Multiverse.ModUI
                 
                 void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
                 {
-                    Subworld.Enter(SubworldManager.WorldsEnter[name]);
+                    if (Main.netMode != NetmodeID.Server)
+                    {
+                        Subworld.Enter(SubworldManager.WorldsEnter[name]);
+                    }
                     Multiverse.instance.HideMyUI();
                 }
                 worldButton = new UIClickableButton(name, OnButtonClick);
@@ -47,7 +51,18 @@ namespace Multiverse.ModUI
                 worldSelect.Add(worldButton); 
             }
             panel.Append(worldSelect);
-            
+            UIImageButton closeButton = new UIImageButton(ModContent.GetTexture("Terraria/UI/ButtonDelete"));
+            closeButton.OnClick += OnCloseClick;
+            closeButton.Width.Set(22, 0); // 5
+            closeButton.Height.Set(22, 0); // 5
+            closeButton.HAlign = 1.0f;
+            closeButton.VAlign = 0.0f;
+            void OnCloseClick(UIMouseEvent evt, UIElement listeningElement)
+            {
+                Multiverse.instance.HideMyUI();
+            }
+            panel.Append(closeButton);
+
         }
 
 

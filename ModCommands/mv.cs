@@ -33,31 +33,22 @@ namespace Multiverse.ModCommands
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
-            if (args.Length > 0)
+            if (args.Length > 0 && Main.netMode != NetmodeID.Server)
             {
                 switch (args[0])
                 {
                     case "enter":
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                        {
-                            Subworld.Enter(SubworldManager.WorldsEnter[args[1]]);
-                            Main.NewText(caller.Player.name + " Entered " + args[1], 0, 255, 0);
-                        }
+                        Subworld.Enter(SubworldManager.WorldsEnter[args[1]]);
+                        Main.NewText(caller.Player.name + " Entered " + args[1], 0, 255, 0);
                         break;
                     case "leave":
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                        {
-                            Subworld.Exit();
-                            Main.NewText(caller.Player.name + " Entered Main World", 0, 255, 0);
-                        }
+                        Subworld.Exit();
+                        Main.NewText(caller.Player.name + " Entered Main World", 0, 255, 0);
                         break;
                     case "list":
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        foreach (KeyValuePair<string, string> entry in SubworldManager.WorldsEnter)
                         {
-                            foreach (KeyValuePair<string, string> entry in SubworldManager.WorldsEnter)
-                            {
-                                Main.NewText(entry.Key, 0, 255, 0);
-                            }
+                            Main.NewText(entry.Key, 0, 255, 0);
                         }
                         break;
                     case "gui":

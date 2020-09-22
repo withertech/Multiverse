@@ -165,6 +165,7 @@ namespace Multiverse.ModWorlds
 					y = 0;
 					break;
 			}
+			
 			subworldLibrary = ModLoader.GetMod("SubworldLibrary");
 			if (subworldLibrary != null)
 			{
@@ -176,7 +177,7 @@ namespace Multiverse.ModWorlds
 					/*int height*/ y,
 					/*List<GenPass> tasks*/ NormalGenPassList(),
 					/*the following ones are optional, I've included three here (technically two but since order matters, had to pass null for the unload argument)
-					/*Action load*/ (Action)LoadWorld,
+					/*Action load*/ (Action)LoadNormalWorld,
 					/*Action unload*/ null,
 					/*ModWorld modWorld*/ null,
 					/*bool saveSubworld*/ save
@@ -201,6 +202,12 @@ namespace Multiverse.ModWorlds
 		{
 			Main.dayTime = true;
 			Main.time = 27000;
+			SLWorld.drawUnderworldBackground = false;
+		}
+
+		public static void LoadNormalWorld()
+		{
+			SLWorld.drawUnderworldBackground = true;
 		}
 
 		//Called in subworldLibrary.Call()
