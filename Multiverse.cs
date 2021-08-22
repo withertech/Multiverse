@@ -15,7 +15,7 @@ namespace Multiverse
 	{
 		string id;
 		internal UserInterface worldSelectInterface;
-		internal WorldSelectUI worldSelectUI;
+		internal WorldSelectUi worldSelectUI;
 		private GameTime _lastUpdateUiGameTime;
 		public static Multiverse instance;
 
@@ -63,6 +63,7 @@ namespace Multiverse
 		public override void Unload()
 		{
 			base.Unload();
+			SubworldManager.Unload();
 			worldSelectUI = null;
 		}
 		public override void MidUpdateTimeWorld()
@@ -142,7 +143,7 @@ namespace Multiverse
 			{
 				worldSelectInterface = new UserInterface();
 
-				worldSelectUI = new WorldSelectUI();
+				worldSelectUI = new WorldSelectUi();
 				worldSelectUI.Activate(); // Activate calls Initialize() on the UIState if not initialized, then calls OnActivate and then calls Activate on every child element
 			}
 		}

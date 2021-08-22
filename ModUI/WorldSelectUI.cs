@@ -14,7 +14,7 @@ using Terraria.ID;
 
 namespace Multiverse.ModUI
 {
-    class WorldSelectUI : UIState
+    internal class WorldSelectUi : UIState
     {
         public override void OnInitialize()
         { // 1

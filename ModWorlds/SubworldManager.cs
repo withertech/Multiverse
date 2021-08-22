@@ -2,16 +2,18 @@
 using SubworldLibrary;
 using System;
 using System.Collections.Generic;
+using Multiverse.ModUI;
 using Terraria;
 using Terraria.IO;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
+using Terraria.Utilities;
 using Terraria.World.Generation;
 
 namespace Multiverse.ModWorlds
 {
-	//This class showcases how to organize your SubworldLibrary reference
 	public static class SubworldManager
 	{
 		public static Dictionary<string, string> WorldsEnter = new Dictionary<string, string>();
@@ -44,8 +46,8 @@ namespace Multiverse.ModWorlds
 			return subworldLibrary.Call("AnyActive", mod) as bool?;
 		}
 		#endregion
+		
 
-		//Call this in ModCallExampleMod.PostSetupContent()
 		public static string CreateVoidWorld(string name, WorldSize size, bool save)
 		{
 			int x;
@@ -207,10 +209,11 @@ namespace Multiverse.ModWorlds
 
 		public static void LoadNormalWorld()
 		{
+			Main.dayTime = true;
+			Main.time = 27000;
 			SLWorld.drawUnderworldBackground = true;
 		}
 
-		//Called in subworldLibrary.Call()
 		public static List<GenPass> VoidGenPassList()
 		{
 			List<GenPass> list = new List<GenPass>
@@ -241,14 +244,51 @@ namespace Multiverse.ModWorlds
 					Main.rockLayer = Main.maxTilesY - 64; //Hides the cavern layer way out of bounds
 					for (int i = -Main.maxTilesX; i < Main.maxTilesX; i++)
 					{
-						for (int ii = Main.maxTilesY; ii > Main.spawnTileY; ii--)
+						float percent = (float) i /  Main.maxTilesX;
+						progress.Set(percent);
+						for (int ii = Main.spawnTileY + 30; ii > Main.spawnTileY; ii--)
 						{
 							WorldGen.PlaceTile(i,  ii, TileID.Dirt, true, true);
 						}
 					}
+				}),
+				new SubworldGenPass(progress =>
+				{
+					progress.Message = "Placing Stone";
+					for (int i = -Main.maxTilesX; i < Main.maxTilesX; i++)
+					{
+						float percent = (float) i /  Main.maxTilesX;
+						progress.Set(percent);
+						for (int ii = Main.maxTilesY; ii > Main.spawnTileY + 30; ii--)
+						{
+							WorldGen.PlaceTile(i,  ii, TileID.Stone, true, true);
+						}
+					}
+				}),
+				new SubworldGenPass(progress =>
+				{
+					progress.Message = "Spreading Grass";
+					for (int i = -Main.maxTilesX; i < Main.maxTilesX; i++)
+					{
+						WorldGen.SpreadGrass(i, Main.spawnTileY + 1);
+					}
+				}),
+				new SubworldGenPass(progress =>
+				{
+					if (ModContent.GetInstance<Config>().FlatWorldsHaveTrees)
+					{
+						progress.Message = "Growing Trees";
+						WorldGen.AddTrees();
+					}
+					progress.Set(100.0f);
+				}),
+				new SubworldGenPass(progress =>
+				{
+					progress.Message = "Growing Plants";
+					WorldGen.AddPlants();
+					progress.Set(100.0f);
 				})
 			};
-
 			return list;
 		}
 
@@ -258,8 +298,7 @@ namespace Multiverse.ModWorlds
 			{
 				new SubworldGenPass(progress =>
 				{
-					WorldGen.generateWorld(WorldGen._genRandSeed, progress);
-					WorldFile.saveWorld();
+					WorldGen.generateWorld(new UnifiedRandom().Next(), progress);
 				})
 			};
 

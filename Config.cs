@@ -2,6 +2,7 @@
 using SubworldLibrary;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using Terraria;
 using Terraria.IO;
@@ -20,5 +21,8 @@ namespace Multiverse
             { "FlatWorld", new WorldSettings {type = WorldType.FlatWorld, size = WorldSize.Medium, save = true} },
             { "NormalWorld", new WorldSettings {type = WorldType.NormalWorld, size = WorldSize.Medium, save = true} }
         };
+
+        [Label("Flat Worlds Have Trees")] [DefaultValue(true)]
+        public bool FlatWorldsHaveTrees = true;
     }
 }
